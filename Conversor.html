@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor Numerico</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+      <h1 for="label" id="tituloInicial"> Digite valor a converter: </h1>
+        <input type="text" name="label" id="dadooriginal" class="box" onchange="setorigem()"><br> <br>
+
+        <form >
+          <label for="tipo_origem">De:</label>
+            <select name="tipo_origem" id="tiposor" class="box" onchange="set_tipo_origem(), format()">
+              <option></option>
+              <option id="1" value="Decimal">Decimal</option>
+              <option id="2" value="Binário">Binário</option>
+              <option id="3" value="Octal">Octal</option>
+              <option id="4" value="Hexadecimal">Hexadecimal</option>
+            </select>
+
+           <label for="tipo_destino">Para:</label>
+              <select name="tipo_destino" id="tiposdest" class="box" onchange="set_tipo_dest()">
+               <option id="10"></option>
+               <option id="5" value="Decimal">Decimal</option>
+                <option id="6" value="Binário">Binário</option>
+               <option id="7" value="Octal">Octal</option>
+                <option id="8" value="Hexadecimal">Hexadecimal</option>
+               </select> <br><br>
+
+          <input type="button" value="Converter" onclick="calcula()">
+            <br><br>
+          </form>
+
+
+    
+    
+      <label for="label"> Resultado: </label>
+      <input type="text" name="label" id="resultado" class="box" disabled="disabled">
+
+
+    <script>
+
+      // variáveis
+      var origem = 0; // variável que identifica o valor do input do valor a ser convertido setado através de uma função onchange no respectivo input text.
+      var destino = 0;
+      var tipo_origem = "";
+      var tipo_destino = "";
+      var tiposor = document.getElementById("tiposor");
+
+        // bloco que seta os valores dos elementos em variáveis
+        function setorigem(){
+          origem = document.getElementById("dadooriginal").value;
+        } 
+
+        function set_tipo_origem(){
+          tipo_origem = document.getElementById("tiposor").value;
+        }
+
+        function set_tipo_dest(){
+          tipo_destino = document.getElementById("tiposdest").value;
+        }
+
+
+        // bloco que oculta os valores repetidos no form
+        function format(){
+          if (tiposor.value == "Decimal"){
+            document.getElementById("tiposdest").value= "";
+            document.getElementById("5").hidden= true;
+            document.getElementById("6").hidden= false;
+            document.getElementById("7").hidden= false;
+            document.getElementById("8").hidden= false;
+          }
+          if (tiposor.value == "Binário"){
+            document.getElementById("tiposdest").value= "";
+            document.getElementById("5").hidden= false;
+            document.getElementById("6").hidden= true;
+            document.getElementById("7").hidden= false;
+            document.getElementById("8").hidden= false;
+          }
+          if (tiposor.value == "Octal"){
+            document.getElementById("tiposdest").value= "";
+            document.getElementById("5").hidden= false;
+            document.getElementById("6").hidden= false;
+            document.getElementById("7").hidden= true;
+            document.getElementById("8").hidden= false;
+          }
+          if (tiposor.value == "Hexadecimal"){
+            document.getElementById("tiposdest").value= "";
+            document.getElementById("5").hidden= false;
+            document.getElementById("6").hidden= false;
+            document.getElementById("7").hidden= false;
+            document.getElementById("8").hidden= true;
+          }
+        }
+
+        //bloco que calcula a coversão conforme os valores selecionados e chama as respectivas funções
+        function calcula(){
+          temp = document.getElementById("tiposor").value;
+          if(temp === "Decimal"){
+              if (tipo_destino === "Binário"){
+                dectobin();
+              } else if (tipo_destino === "Octal") {
+                dectooct();
+              } else if (tipo_destino === "Hexadecimal"){
+                dectohex();
+              }
+          } else if (temp === "Binário"){
+              if (tipo_destino === "Decimal"){
+                bintodec();
+              } else if (tipo_destino === "Octal"){
+                bintooct();
+              } else if (tipo_destino === "Hexadecimal"){
+                bintohex();
+              }
+          } else if (temp === "Octal"){
+            if (tipo_destino === "Decimal"){
+              octtodec();
+            } else if (tipo_destino === "Binário"){
+              octtobin();
+            } else if (tipo_destino === "Hexadecimal"){
+              octtohex();
+            }
+          } else if (temp === "Hexadecimal"){
+            if (tipo_destino === "Decimal"){
+              hextodec();
+            } else if (tipo_destino === "Binário"){
+              hextobin();
+            } else if (tipo_destino === "Octal"){
+              hextooct();
+            }
+          }   
+
+        }
+
+        // bloco de funções com alguns comentários
+        function dectobin(){
+          origem = parseInt(origem);
+          const destino = origem.toString(2); // a função toString(base=2) converte o decimal em binário
+          resultado.value = destino; // seta o value do input text com o valor resultante do cálculo.
+        }
+        function dectooct(){
+          origem = parseInt(origem);
+          const destino = origem.toString(8); // a função toString(base=8) converte o decimal em octal
+          resultado.value = destino;
+        }
+        function dectohex(){
+          origem = parseInt(origem);
+          const destino = origem.toString(16); // a função toString(base=16) converte o decimal em hexadecimal
+          resultado.value = destino;
+        }
+        function bintodec(){
+          const destino = parseInt(origem, 2); // a função parseInt(variável, base = 2) converte em decimal o valor da variável informando que ela está na base 2 (binária).
+          resultado.value = destino;
+        }
+        function bintooct(){                    
+          const destino = parseInt(origem, 2);// A variável destino armazena o resultado da função parseInt(variável, base = 2) que converte em decimal o valor da variável informando que ela está na base 2 (binária)..
+          temp = destino.toString(8); // a função toString(base=8) converte o decimal (armazenado na variável destino) em octal.
+          resultado.value = temp;
+        }
+        function bintohex(){                    
+          const destino = parseInt(origem, 2);// A variável destino armazena o resultado da função parseInt(variável, base = 2) converte em decimal o valor da variável informando que ela está na base 2 (binária).
+          temp = destino.toString(16);// a função toString(base=16) converte o decimal (armazenado na variável destino) em hexadecimal.
+          resultado.value = temp;
+        }
+        function octtodec(){
+          const destino = parseInt(origem, 8);// A função parseInt(variavel, base) converte em decimal pois é informado a função que o valor da variavel origem está na base 8 (octal).
+          resultado.value = destino;
+        }
+        function octtobin(){
+          const destino = parseInt(origem, 8);// A função parseInt(variavel, base) converte em decimal pois é informado a função que o valor da variavel origem está na base 8 (octal).
+          temp = destino.toString(2); // a função toString(base=2) converte o decimal em binário
+          resultado.value = temp;         
+        }
+        // as demais seguem as correlações de conversão anteriores mudando as bases.
+        function octtohex(){
+          const decimal = parseInt(origem, 8);
+          temp = decimal.toString(16);
+          resultado.value = temp;         
+        }
+        function hextodec(){
+          const decimal = parseInt(origem, 16);
+          resultado.value = decimal;         
+        }
+        function hextobin(){
+          const decimal = parseInt(origem, 16);
+          destino = decimal.toString(2);
+          resultado.value = destino;         
+        }
+        function hextooct(){
+          const decimal = parseInt(origem, 16);
+          destino = decimal.toString(8);
+          resultado.value = destino;         
+        }
+           
+    
+    </script>
+
+
+
+    
+</body>
+</html>
